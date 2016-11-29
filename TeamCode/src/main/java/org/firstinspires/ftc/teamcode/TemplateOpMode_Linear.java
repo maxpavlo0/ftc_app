@@ -95,7 +95,27 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             MotorLeft.setPower(-gamepad1.left_stick_y);
             if(gamepad1.right_bumper)
             {
-
+                if(gamepad1.left_stick_y == 0){
+                    MotorLeft.setPower(-1);
+                    MotorRight.setPower(1);
+                }
+                else
+                {
+                    MotorRight.setPower(-gamepad1.left_stick_y);
+                    MotorLeft.setPower(-gamepad1.left_stick_y/2);
+                }
+                }
+            if(gamepad1.left_bumper)
+            {
+                if(gamepad1.left_stick_y == 0){
+                    MotorRight.setPower(-1);
+                    MotorLeft.setPower(1);
+                }
+                else
+                {
+                    MotorLeft.setPower(-gamepad1.left_stick_y);
+                    MotorRight.setPower(-gamepad1.left_stick_y/2);
+                }
             }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
