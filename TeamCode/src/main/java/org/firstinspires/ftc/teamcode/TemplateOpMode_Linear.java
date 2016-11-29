@@ -30,11 +30,11 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -55,16 +55,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 @Disabled
 public class TemplateOpMode_Linear extends LinearOpMode {
+    private DcMotor MotorLeft;
+    private DcMotor MotorRight;
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor leftMotor = null;
-    DcMotor rightMotor = null;
+    // DcMotor leftMotor = null;
+    // DcMotor rightMotor = null;
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
+        MotorRight = hardwareMap.dcMotor.get("MotorRight");
+
 
         /* eg: Initialize the hardware variables. Note that the strings used here as parameters
          * to 'get' must correspond to the names assigned during the robot configuration
@@ -86,7 +91,32 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
-
+            MotorRight.setPower(-gamepad1.left_stick_y);
+            MotorLeft.setPower(-gamepad1.left_stick_y);
+            if(gamepad1.right_bumper)
+            {
+                if(gamepad1.left_stick_y == 0){
+                    MotorLeft.setPower(-1);
+                    MotorRight.setPower(1);
+                }
+                else
+                {
+                    MotorRight.setPower(-gamepad1.left_stick_y);
+                    MotorLeft.setPower(-gamepad1.left_stick_y/2);
+                }
+                }
+            if(gamepad1.left_bumper)
+            {
+                if(gamepad1.left_stick_y == 0){
+                    MotorRight.setPower(-1);
+                    MotorLeft.setPower(1);
+                }
+                else
+                {
+                    MotorLeft.setPower(-gamepad1.left_stick_y);
+                    MotorRight.setPower(-gamepad1.left_stick_y/2);
+                }
+            }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
             // rightMotor.setPower(-gamepad1.right_stick_y);
