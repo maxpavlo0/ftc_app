@@ -54,10 +54,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 @Disabled
+
 public class TemplateOpMode_Linear extends LinearOpMode {
     private DcMotor MotorLeft;
     private DcMotor MotorRight;
-
+    private void move(float powerRight,float powerLeft)
+    {
+        MotorRight.setPower(powerRight);
+        MotorLeft.setPower(powerLeft);
+    }
+    private   void turnLeft(float power)
+    {
+        MotorRight.setPower(power);
+        MotorLeft.setPower(power/3);
+    }
+    private   void turnRight(float power)
+    {
+        MotorRight.setPower(power/3);
+        MotorLeft.setPower(power);
+    }
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     // DcMotor leftMotor = null;
@@ -69,40 +84,23 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         telemetry.update();
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight");
-
-
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
-        // leftMotor  = hardwareMap.dcMotor.get("left_drive");
-        // rightMotor = hardwareMap.dcMotor.get("right_drive");
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
-        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
-        // Wait for the game to start (driver presses PLAY)
+        float powerLeft = -gamepad1.left_stick_y;
+        float powerRight = -gamepad1.right_stick_y;
         waitForStart();
         runtime.reset();
-
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+        while (opModeIsActive())
+        {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
-            MotorRight.setPower(-gamepad1.right_stick_y);
-            MotorLeft.setPower(-gamepad1.left_stick_y);
-            if(-gamepad1.right_stick_y == 0 || -gamepad1.left_stick_y !=0)
+            move(powerRight,powerLeft);
+            if(powerLeft == 0 || powerRight !=0)
             {
-                MotorLeft.setPower(-gamepad1.left_stick_y);
-                MotorRight.setPower(-gamepad1.left_stick_y/3);
+                turnRight(powerRight);
 
             }
-            if(-gamepad1.left_stick_y == 0 || -gamepad1.right_stick_y !=0)
+            if(powerRight == 0 || powerLeft !=0)
             {
-                MotorRight.setPower(-gamepad1.left_stick_y);
-                MotorLeft.setPower(-gamepad1.left_stick_y/3);
+               turnLeft(powerLeft);
 
             }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
@@ -110,4 +108,5 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             // rightMotor.setPower(-gamepad1.right_stick_y);
         }
     }
+
 }
