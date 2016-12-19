@@ -108,4 +108,5 @@ public class AutoOpMode extends LinearOpMode {
         turnRight(power, 1000);
         driveForward(0, 10);
     }
+
 }
