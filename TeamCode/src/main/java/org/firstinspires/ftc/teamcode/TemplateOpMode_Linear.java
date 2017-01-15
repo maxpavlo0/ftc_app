@@ -53,15 +53,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
-@Disabled
 
 public class TemplateOpMode_Linear extends LinearOpMode {
     private DcMotor MotorLeft;
     private DcMotor MotorRight;
+    private DcMotor Motorpushsuck;
+
     private void move(float powerRight,float powerLeft)
     {
         MotorRight.setPower(powerRight);
         MotorLeft.setPower(powerLeft);
+    }
+    public void  suck(float powersuck)
+    {
+        Motorpushsuck.setPower(powersuck);
     }
     private   void turnLeft(float power)
     {
@@ -74,34 +79,44 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         MotorLeft.setPower(power);
     }
     /* Declare OpMode members. */
-    private ElapsedTime runtime = new ElapsedTime();
+
     // DcMotor leftMotor = null;
     // DcMotor rightMotor = null;
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight");
+
         float powerLeft = -gamepad1.left_stick_y;
         float powerRight = -gamepad1.right_stick_y;
+
         waitForStart();
-        runtime.reset();
+
         while (opModeIsActive())
         {
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+
             telemetry.update();
             move(powerRight,powerLeft);
             if(powerLeft == 0 || powerRight !=0)
             {
-                turnRight(powerRight);
+                turnRight(powerRight);              // if you using motor left and not using motorright the thing that happens the power of motorright going to the functiom and turning right.
 
             }
             if(powerRight == 0 || powerLeft !=0)
             {
                turnLeft(powerLeft);
 
+            }
+            if (gamepad1.a)
+            {
+                suck(1);
+            }
+            if (gamepad1.b)
+            {
+                suck(-1);
             }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
             // leftMotor.setPower(-gamepad1.left_stick_y);
