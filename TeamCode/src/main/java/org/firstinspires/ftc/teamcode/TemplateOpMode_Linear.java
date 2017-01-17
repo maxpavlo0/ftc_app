@@ -59,29 +59,34 @@ public class TemplateOpMode_Linear extends LinearOpMode {
     private DcMotor MotorRight;
     private DcMotor Motorpushsuck;
 
-    private void move(float powerRight,float powerLeft)
+    private void move(double powerRight,double powerLeft)
     {
         MotorRight.setPower(powerRight);
         MotorLeft.setPower(powerLeft);
     }
-    public void  suck(float powersuck)
+    public void  suck(double powersuck)
     {
         Motorpushsuck.setPower(powersuck);
     }
-    private   void turnLeft(float power)
+    private void turnLeft(double power)
     {
         MotorRight.setPower(power);
         MotorLeft.setPower(power/3);
     }
-    private   void turnRight(float power)
+    public void turnarpund(double powerright,double powerleft)
+    {
+        MotorLeft.setPower(-powerleft);
+        MotorRight.setPower(powerright);
+    }
+    private void turnRight(double power)
     {
         MotorRight.setPower(power/3);
         MotorLeft.setPower(power);
     }
     /* Declare OpMode members. */
 
-    // DcMotor leftMotor = null;
-    // DcMotor rightMotor = null;
+     DcMotor leftMotor = null;
+    DcMotor rightMotor = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -89,7 +94,7 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         telemetry.update();
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight");
-
+        Motorpushsuck = hardwareMap.dcMotor.get("Motorpushsuck");
         float powerLeft = -gamepad1.left_stick_y;
         float powerRight = -gamepad1.right_stick_y;
 
@@ -97,30 +102,27 @@ public class TemplateOpMode_Linear extends LinearOpMode {
 
         while (opModeIsActive())
         {
-
             telemetry.update();
-            move(powerRight,powerLeft);
-            if(powerLeft == 0 || powerRight !=0)
+            move(gamepad1.right_stick_y,gamepad1.left_stick_y);
+           if (gamepad1.a)
             {
-                turnRight(powerRight);              // if you using motor left and not using motorright the thing that happens the power of motorright going to the functiom and turning right.
-
+                Motorpushsuck.setPower(1);
             }
-            if(powerRight == 0 || powerLeft !=0)
+           else
             {
-               turnLeft(powerLeft);
-
-            }
-            if (gamepad1.a)
+                Motorpushsuck.setPower(0);
+           }
+           if (gamepad1.b)
             {
-                suck(1);
-            }
-            if (gamepad1.b)
+                Motorpushsuck.setPower(1);
+          }
+            else
             {
-                suck(-1);
+                Motorpushsuck.setPower(0);
             }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-            // leftMotor.setPower(-gamepad1.left_stick_y);
-            // rightMotor.setPower(-gamepad1.right_stick_y);
+             leftMotor.setPower(-gamepad1.left_stick_y);
+            rightMotor.setPower(-gamepad1.right_stick_y);
         }
     }
 
