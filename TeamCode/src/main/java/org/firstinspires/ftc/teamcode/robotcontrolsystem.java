@@ -16,8 +16,8 @@ import java.util.concurrent.SynchronousQueue;
 
 @Autonomous(name = "contro.sytem")
 public class robotcontrolsystem extends LinearOpMode {
-    private  DcMotor MotorLeft=null;
-    private  DcMotor MotorRight=null;
+    public  DcMotor MotorLeft;
+   public   DcMotor MotorRight;
 
 
 
@@ -35,9 +35,9 @@ public void moveforward(double powerright, double powerleft)
 
 
      MotorRight = hardwareMap.dcMotor.get("MotorRight");
-
+        MotorLeft=hardwareMap.dcMotor.get("MotorLeft");
      waitForStart();
         moveforward(1,1);
-        Thread.sleep(2300);
+        Thread.sleep(4500);
  }
 }

@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 @Autonomous(name="encoders")
 public class Autonomus_Encoders extends LinearOpMode {
-    DcMotor MotorRight;
-    DcMotor MotorLeft;
+   public DcMotor MotorRight;
+   public DcMotor MotorLeft;
     public  void turnLeft_NoEncoders(double power)
     {
         MotorLeft.setPower(-power);
@@ -107,9 +107,9 @@ public class Autonomus_Encoders extends LinearOpMode {
         MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
-        moveForward_encoders(10,0.3); // Experiment
-        turnRight_encoders(3,0.1); // Experiment
-        turnLeft_encoders(3, 0.1); //Experiment
+        moveForward_encoders(3000,0.3); // Experiment
+        turnRight_encoders(2699,0.1); // Experiment
+        turnLeft_encoders(2323, 0.1); //Experiment
 
     }
 }

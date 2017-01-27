@@ -46,18 +46,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * class is instantiated on the Robot Controller and executed.
  *
  * This particular OpMode just executes a basic Tank Drive Teleop for a PushBot
- * It includes all the skeletal structure that all linear OpModes contain.
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+
 
 @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class TemplateOpMode_Linear extends LinearOpMode {
-    private DcMotor MotorLeft;
-    private DcMotor MotorRight;
-    private DcMotor Motorpushsuck;
+    public  DcMotor MotorLeft;
+    public DcMotor MotorRight;
+    public DcMotor Motorpushsuck;
 
     private void move(double powerRight,double powerLeft)
     {
@@ -85,8 +83,7 @@ public class TemplateOpMode_Linear extends LinearOpMode {
     }
     /* Declare OpMode members. */
 
-     DcMotor leftMotor = null;
-    DcMotor rightMotor = null;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -95,34 +92,32 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight");
         Motorpushsuck = hardwareMap.dcMotor.get("Motorpushsuck");
-        float powerLeft = -gamepad1.left_stick_y;
-        float powerRight = -gamepad1.right_stick_y;
 
         waitForStart();
 
         while (opModeIsActive())
         {
             telemetry.update();
-            move(gamepad1.right_stick_y,gamepad1.left_stick_y);
+            move(-gamepad1.right_stick_y,-gamepad1.left_stick_y);
            if (gamepad1.a)
             {
-                Motorpushsuck.setPower(1);
+                suck(1);
             }
            else
             {
-                Motorpushsuck.setPower(0);
+               suck(0);
            }
            if (gamepad1.b)
             {
-                Motorpushsuck.setPower(1);
+               suck(1);
           }
             else
             {
-                Motorpushsuck.setPower(0);
+                suck(0);
             }
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-             leftMotor.setPower(-gamepad1.left_stick_y);
-            rightMotor.setPower(-gamepad1.right_stick_y);
+           MotorRight.setPower(-gamepad1.right_stick_y);
+            MotorLeft.setPower(-gamepad1.left_stick_y);
         }
     }
 
