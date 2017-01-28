@@ -36,6 +36,7 @@ public void moveforward(double powerright, double powerleft)
 
      MotorRight = hardwareMap.dcMotor.get("MotorRight");
         MotorLeft=hardwareMap.dcMotor.get("MotorLeft");
+        MotorLeft.setDirection(DcMotor.Direction.REVERSE);
      waitForStart();
         moveforward(1,1);
         Thread.sleep(4500);

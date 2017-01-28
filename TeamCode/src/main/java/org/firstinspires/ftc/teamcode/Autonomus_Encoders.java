@@ -106,6 +106,7 @@ public class Autonomus_Encoders extends LinearOpMode {
         MotorRight=hardwareMap.dcMotor.get("MotorRight");
         MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
         moveForward_encoders(3000,0.3); // Experiment
         turnRight_encoders(2699,0.1); // Experiment

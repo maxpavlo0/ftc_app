@@ -59,65 +59,62 @@ public class TemplateOpMode_Linear extends LinearOpMode {
 
     private void move(double powerRight,double powerLeft)
     {
-        MotorRight.setPower(powerRight);
-        MotorLeft.setPower(powerLeft);
+        MotorRight.setPower(-powerRight);
+        MotorLeft.setPower(-powerLeft);
     }
     public void  suck(double powersuck)
     {
         Motorpushsuck.setPower(powersuck);
+
+
     }
     private void turnLeft(double power)
     {
         MotorRight.setPower(power);
-        MotorLeft.setPower(power/3);
+        MotorLeft.setPower(-power);
     }
-    public void turnarpund(double powerright,double powerleft)
+    public void turnright(double power)
     {
-        MotorLeft.setPower(-powerleft);
-        MotorRight.setPower(powerright);
-    }
-    private void turnRight(double power)
-    {
-        MotorRight.setPower(power/3);
         MotorLeft.setPower(power);
+        MotorRight.setPower(-power);
     }
+
     /* Declare OpMode members. */
 
 
 
     @Override
+
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight = hardwareMap.dcMotor.get("MotorRight");
         Motorpushsuck = hardwareMap.dcMotor.get("Motorpushsuck");
-
+            MotorLeft.setDirection(DcMotor.Direction.REVERSE);
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             telemetry.update();
-            move(-gamepad1.right_stick_y,-gamepad1.left_stick_y);
-           if (gamepad1.a)
-            {
+            move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
+
+            if (gamepad1.a) {
+                suck(-1);
+
+            }
+
+
+            if (gamepad1.b) {
                 suck(1);
             }
-           else
+            if (gamepad1.right_bumper)
             {
-               suck(0);
-           }
-           if (gamepad1.b)
-            {
-               suck(1);
-          }
-            else
-            {
-                suck(0);
+                turnright(1);
             }
-            // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-           MotorRight.setPower(-gamepad1.right_stick_y);
-            MotorLeft.setPower(-gamepad1.left_stick_y);
+            if (gamepad1.left_bumper)
+            {
+                turnLeft(1);
+            }
         }
     }
 
