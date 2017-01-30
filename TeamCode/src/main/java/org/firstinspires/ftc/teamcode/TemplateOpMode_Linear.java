@@ -68,15 +68,15 @@ public class TemplateOpMode_Linear extends LinearOpMode {
 
 
     }
-    private void turnLeft(double power)
+    private void TurnLeft(double powerright,double powerleft)
     {
-        MotorRight.setPower(power);
-        MotorLeft.setPower(-power);
+        MotorRight.setPower(powerright);
+        MotorLeft.setPower(powerleft);
     }
-    public void turnright(double power)
+    public void TurnRight(double powerright,double powerleft)
     {
-        MotorLeft.setPower(power);
-        MotorRight.setPower(-power);
+        MotorLeft.setPower(powerleft);
+        MotorRight.setPower(powerright);
     }
 
     /* Declare OpMode members. */
@@ -109,11 +109,15 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             }
             if (gamepad1.right_bumper)
             {
-                turnright(1);
+                TurnRight(0.2,1);
             }
             if (gamepad1.left_bumper)
             {
-                turnLeft(1);
+                TurnLeft(1,0.2);
+            }
+            if ( gamepad1.a && gamepad1.b)
+            {
+                suck(0);
             }
         }
     }
