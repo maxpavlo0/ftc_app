@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Hardware;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -53,73 +54,62 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class TemplateOpMode_Linear extends LinearOpMode {
-    public  DcMotor MotorLeft;
-    public DcMotor MotorRight;
-    public DcMotor Motorpushsuck;
-
-    private void move(double powerRight,double powerLeft)
-    {
-        MotorRight.setPower(-powerRight);
-        MotorLeft.setPower(-powerLeft);
-    }
-    public void  suck(double powersuck)
-    {
-        Motorpushsuck.setPower(powersuck);
 
 
-    }
-    private void TurnLeft(double powerright,double powerleft)
-    {
-        MotorRight.setPower(powerright);
-        MotorLeft.setPower(powerleft);
-    }
-    public void TurnRight(double powerright,double powerleft)
-    {
-        MotorLeft.setPower(powerleft);
-        MotorRight.setPower(powerright);
-    }
 
     /* Declare OpMode members. */
 
 
-
     @Override
 
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode()  {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
-        MotorRight = hardwareMap.dcMotor.get("MotorRight");
-        Motorpushsuck = hardwareMap.dcMotor.get("Motorpushsuck");
-            MotorLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        RobotClass m = new RobotClass(hardwareMap);
+        Autonomus_Encoders Encoders = new Autonomus_Encoders();
         waitForStart();
 
         while (opModeIsActive()) {
             telemetry.update();
-            move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
+
+            m.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
+
 
             if (gamepad1.a) {
-                suck(-1);
+                m.suck(-1);
 
             }
 
 
             if (gamepad1.b) {
-                suck(1);
+                m.suck(1);
             }
-            if (gamepad1.right_bumper)
+            if (gamepad1.right_bumper) {
+                m.TurnRight(0.2, 1);
+            }
+            if (gamepad1.left_bumper) {
+                m.TurnLeft(1, 0.2);
+            }
+            if (gamepad1.a && gamepad1.b) {
+                m.suck(0);
+            }
+            if(gamepad1.dpad_up)
             {
-                TurnRight(0.2,1);
+                Encoders.MoveForward_NoENcoders(0.2);
+                Encoders.moveForward_encoders(1000,0.2);
             }
-            if (gamepad1.left_bumper)
+            if (gamepad1.dpad_down)
             {
-                TurnLeft(1,0.2);
+                Encoders.MoveForward_NoENcoders(0.2);
+                Encoders.moveForward_encoders(-1000,0.2);
             }
-            if ( gamepad1.a && gamepad1.b)
-            {
-                suck(0);
-            }
+
         }
     }
-
 }
+
+
+
+
+
