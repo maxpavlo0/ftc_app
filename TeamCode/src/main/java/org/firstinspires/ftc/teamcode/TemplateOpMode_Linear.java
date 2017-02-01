@@ -32,13 +32,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Hardware;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -66,43 +61,41 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        RobotClass m = new RobotClass(hardwareMap);
-        Autonomus_Encoders Encoders = new Autonomus_Encoders();
+        RobotClass robot = new RobotClass(hardwareMap);
+
         waitForStart();
 
         while (opModeIsActive()) {
             telemetry.update();
 
-            m.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
+            robot.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
 
 
             if (gamepad1.a) {
-                m.suck(-1);
+                robot.suck(-1);
 
             }
 
 
             if (gamepad1.b) {
-                m.suck(1);
+                robot.suck(1);
             }
             if (gamepad1.right_bumper) {
-                m.TurnRight(0.2, 1);
+                robot.TurnRight(0.2, 1);
             }
             if (gamepad1.left_bumper) {
-                m.TurnLeft(1, 0.2);
+                robot.TurnLeft(1, 0.2);
             }
             if (gamepad1.a && gamepad1.b) {
-                m.suck(0);
+                robot.suck(0);
             }
-            if(gamepad1.dpad_up)
+            if(gamepad1.dpad_down)
             {
-                Encoders.MoveForward_NoENcoders(0.2);
-                Encoders.moveForward_encoders(1000,0.2);
+                robot.moveForward_encoders(1000,0.2);
             }
-            if (gamepad1.dpad_down)
+            if (gamepad1.dpad_up)
             {
-                Encoders.MoveForward_NoENcoders(0.2);
-                Encoders.moveForward_encoders(-1000,0.2);
+              robot.movebackwards_encoders(1000,0.2);
             }
 
         }
