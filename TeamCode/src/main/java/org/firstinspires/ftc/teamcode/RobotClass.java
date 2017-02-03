@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.media.MediaCodecInfo;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.robocol.TelemetryMessage;
@@ -82,7 +84,7 @@ public class RobotClass {
         MotorRight.setPower(power);
         MotorLeft.setPower(power);
     }
-    public void moveForward_encoders(int distance,double power)
+    public void moveForward_encoders(int distance,double power,Telemetry telemetry)
     {
         MotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         MotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -93,16 +95,23 @@ public class RobotClass {
         // distance
         MotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         MotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("the current position is", MotorLeft.getCurrentPosition());
+        telemetry.addData("the current position is",MotorRight.getCurrentPosition());
+        MotorRight.getCurrentPosition();
      move(power,power);
+
         while (MotorLeft.isBusy() && MotorRight.isBusy())
         {
-            //waiting for getting to the given directon
+            telemetry.addData("the loop is still working the motor left is ",MotorLeft);
+            telemetry.addData("the loop is still working the motorright is", MotorRight);
 
         }
         stopddriving();
-        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("the current new position is", MotorLeft.getCurrentPosition());
+        telemetry.addData("the current new position is",MotorRight.getCurrentPosition());
+
 
     }
     public void movebackwards_encoders(int distance,double power)

@@ -91,7 +91,7 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             }
             if(gamepad1.dpad_down)
             {
-                robot.moveForward_encoders(1000,0.2);
+                robot.moveForward_encoders(1000,0.2,telemetry);
             }
             if (gamepad1.dpad_up)
             {
