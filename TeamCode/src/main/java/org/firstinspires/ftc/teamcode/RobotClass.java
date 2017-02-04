@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.media.MediaCodecInfo;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.robocol.TelemetryMessage;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -14,17 +11,34 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 
 public class RobotClass {
-
+    public  DcMotor motorShootl;
     public DcMotor MotorLeft;
    public   DcMotor MotorRight;
     public  DcMotor Motorpushsuck;
+    public Servo servoLoad;
     RobotClass(HardwareMap hardwareMap)
     {
         MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
         MotorRight=hardwareMap.dcMotor.get("MotorRight");
         Motorpushsuck=hardwareMap.dcMotor.get("Motorpushsuck");
+        motorShootl=hardwareMap.dcMotor.get("motorshoot1");
+        servoLoad=hardwareMap.servo.get("servoLoad");
         MotorLeft.setDirection(DcMotor.Direction.REVERSE);
 
+    }
+    public void  shoot(int power)
+    {
+        motorShootl.setPower(1);
+    }
+    public void servcontrolopen()
+    {
+
+        servoLoad.setPosition(0.8);
+
+    }
+    public void servocontrolclose()
+    {
+        servoLoad.setPosition(0.002);
     }
     public void turnLeft_encoders(int distance,double power)
     {

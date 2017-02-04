@@ -71,13 +71,13 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             robot.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
 
 
-            if (gamepad1.a) {
+            if (gamepad2.a) {
                 robot.suck(-1);
 
             }
 
 
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 robot.suck(1);
             }
             if (gamepad1.right_bumper) {
@@ -89,13 +89,25 @@ public class TemplateOpMode_Linear extends LinearOpMode {
             if (gamepad1.a && gamepad1.b) {
                 robot.suck(0);
             }
-            if(gamepad1.dpad_down)
+            if(gamepad1.dpad_down || gamepad2.dpad_down)
             {
                 robot.moveForward_encoders(1000,0.2,telemetry);
             }
-            if (gamepad1.dpad_up)
+            if (gamepad1.dpad_up || gamepad2.dpad_up)
             {
               robot.movebackwards_encoders(1000,0.2);
+            }
+            if (gamepad2.right_bumper)
+            {
+                robot.servcontrolopen();
+            }
+            if (gamepad2.left_bumper)
+            {
+                robot.servocontrolclose();
+            }
+            if(gamepad2.x)
+            {
+                robot.shoot(1);
             }
 
         }
