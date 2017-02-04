@@ -46,9 +46,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 
-@TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Gamepad_Controller", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
-public class TemplateOpMode_Linear extends LinearOpMode {
+public class Gamepad_Controller extends LinearOpMode {
 
 
 
@@ -58,6 +58,7 @@ public class TemplateOpMode_Linear extends LinearOpMode {
     @Override
 
     public void runOpMode()  {
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -66,6 +67,9 @@ public class TemplateOpMode_Linear extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            telemetry.addData("left motor: ",robot.motorLeft.getCurrentPosition());
+
+            telemetry.addData("right motor: ",robot.motorRight.getCurrentPosition());
             telemetry.update();
 
             robot.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
@@ -81,29 +85,29 @@ public class TemplateOpMode_Linear extends LinearOpMode {
                 robot.suck(1);
             }
             if (gamepad1.right_bumper) {
-                robot.TurnRight(0.2, 1);
+                robot.turnRight(0.2, 1);
             }
             if (gamepad1.left_bumper) {
-                robot.TurnLeft(1, 0.2);
+                robot.turnLeft(1, 0.2);
             }
             if (gamepad1.a && gamepad1.b) {
                 robot.suck(0);
             }
             if(gamepad1.dpad_down || gamepad2.dpad_down)
             {
-                robot.moveForward_encoders(1000,0.2,telemetry);
+                robot.moveForwardEncoders(1000,0.2,telemetry);
             }
             if (gamepad1.dpad_up || gamepad2.dpad_up)
             {
-              robot.movebackwards_encoders(1000,0.2);
+              robot.moveBackwardsEncoders(1000,0.2);
             }
             if (gamepad2.right_bumper)
             {
-                robot.servcontrolopen();
+                robot.servoControlOpen();
             }
             if (gamepad2.left_bumper)
             {
-                robot.servocontrolclose();
+                robot.servoControlClose();
             }
             if(gamepad2.x)
             {

@@ -11,158 +11,160 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 
 public class RobotClass {
-    public  DcMotor motorShootl;
-    public DcMotor MotorLeft;
-   public   DcMotor MotorRight;
-    public  DcMotor Motorpushsuck;
+    public DcMotor motorShoot;
+    public DcMotor motorLeft;
+    public DcMotor motorRight;
+    public DcMotor motorPushSuck;
     public Servo servoLoad;
-    RobotClass(HardwareMap hardwareMap)
-    {
-        MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
-        MotorRight=hardwareMap.dcMotor.get("MotorRight");
-        Motorpushsuck=hardwareMap.dcMotor.get("Motorpushsuck");
-        motorShootl=hardwareMap.dcMotor.get("motorshoot1");
-        servoLoad=hardwareMap.servo.get("servoLoad");
-        MotorLeft.setDirection(DcMotor.Direction.REVERSE);
+
+    RobotClass(HardwareMap hardwareMap) {
+        motorLeft = hardwareMap.dcMotor.get("motorLeft");
+        motorRight = hardwareMap.dcMotor.get("motorRight");
+        motorPushSuck = hardwareMap.dcMotor.get("motorPushSuck");
+        motorShoot = hardwareMap.dcMotor.get("motorshoot1");
+        servoLoad = hardwareMap.servo.get("servoLoad");
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
     }
-    public void  shoot(int power)
-    {
-        motorShootl.setPower(1);
+    //region drive
+    public void shoot(int power) {
+        motorShoot.setPower(1);
     }
-    public void servcontrolopen()
-    {
+
+    public void stopDriving() {
+        move(0, 0);
+    }
+
+    public void suck(double powerSuck) {
+        motorPushSuck.setPower(powerSuck);
+    }
+
+    public void turnLeft(double powerRight, double powerLeft) {
+        motorRight.setPower(powerRight);
+        motorLeft.setPower(powerLeft);
+    }
+
+    public void turnRight(double powerRight, double powerLeft) {
+        motorLeft.setPower(powerLeft);
+        motorRight.setPower(powerRight);
+    }
+
+
+    public void move(double powerRight, double powerLeft) {
+        motorRight.setPower(-powerRight);
+        motorLeft.setPower(-powerLeft);
+    }
+
+    public void servoControlOpen() {
 
         servoLoad.setPosition(0.8);
 
     }
-    public void servocontrolclose()
-    {
+
+    public void servoControlClose() {
         servoLoad.setPosition(0.002);
     }
-    public void turnLeft_encoders(int distance,double power)
-    {
-        MotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // RESET
+    // endregion
 
-        MotorRight.setTargetPosition(distance);
-        MotorLeft.setTargetPosition(-distance);
-        // distence
-        MotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //
-       TurnLeft(1,0);
-        while (MotorLeft.isBusy() && MotorRight.isBusy())
-        {
+
+//region autonomous
+    public void turnLeftEncoders(int distance, double power) {
+
+        //RESET
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // run to distance
+        motorRight.setTargetPosition(distance);
+        motorLeft.setTargetPosition(-distance);
+
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        turnLeft(1, 0);
+        while (motorLeft.isBusy() && motorRight.isBusy()) {
             //waiting for getting to the given directon
         }
-        stopddriving();
-        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopDriving();
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-    public void turnRight_encoders(int distance,double power)
-    {
-        MotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // RESET
 
-        MotorRight.setTargetPosition(-distance);
-        MotorLeft.setTargetPosition(distance);
-        // distence
-        MotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //
-        TurnRight(0,1);
-        while (MotorLeft.isBusy() && MotorRight.isBusy())
-        {
-            //waiting for getting to the given directon
+    public void turnRightEncoders(int distance, double power) {
+        // RESET
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+// distance
+        motorRight.setTargetPosition(-distance);
+        motorLeft.setTargetPosition(distance);
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        turnRight(0, 1);
+        while (motorLeft.isBusy() && motorRight.isBusy()) {
+            //waiting for getting to the given direction
         }
-        stopddriving();
-        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopDriving();
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-    public void stopddriving()
-    {
-        move(0,0);
-    }
-    public void move(double powerRight,double powerLeft)
-    {
-        MotorRight.setPower(-powerRight);
-        MotorLeft.setPower(-powerLeft);
-    }
-    public void movewithoutencoders(double power)
-    {
-        MotorRight.setPower(power);
-        MotorLeft.setPower(power);
-    }
-    public void moveForward_encoders(int distance,double power,Telemetry telemetry)
-    {
-        MotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    public void moveForwardEncoders(int distance, double power, Telemetry telemetry) {
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // RESET
 
-        MotorRight.setTargetPosition(distance);
-         MotorLeft.setTargetPosition(distance);
+        motorRight.setTargetPosition(distance);
+        motorLeft.setTargetPosition(distance);
         // distance
-        MotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        telemetry.addData("the current position is", MotorLeft.getCurrentPosition());
-        telemetry.addData("the current position is",MotorRight.getCurrentPosition());
-        MotorRight.getCurrentPosition();
-     move(power,power);
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (MotorLeft.isBusy() && MotorRight.isBusy())
-        {
-            telemetry.addData("the loop is still working the motor left is ",MotorLeft);
-            telemetry.addData("the loop is still working the motorright is", MotorRight);
+        telemetry.addData("the current position is", motorLeft.getCurrentPosition());
+        telemetry.addData("the current position is", motorRight.getCurrentPosition());
+        motorRight.getCurrentPosition();
+        move(power, power);
+
+        while (motorLeft.isBusy() && motorRight.isBusy()) {
+            telemetry.addData("the loop is still working the motor left is ", motorLeft);
+            telemetry.addData("the loop is still working the motorright is", motorRight);
 
         }
-        stopddriving();
-        telemetry.addData("the current new position is", MotorLeft.getCurrentPosition());
-        telemetry.addData("the current new position is",MotorRight.getCurrentPosition());
+        stopDriving();
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        telemetry.addData("the current new position is", motorLeft.getCurrentPosition());
+        telemetry.addData("the current new position is", motorRight.getCurrentPosition());
 
 
     }
-    public void movebackwards_encoders(int distance,double power)
-    {
-        MotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        // RESET
 
-        MotorRight.setTargetPosition(-distance);
-        MotorLeft.setTargetPosition(-distance);
-        // distence
-        MotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        MotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        //
-        move(power,power);
-        while (MotorLeft.isBusy() && MotorRight.isBusy())
-        {
+    public void moveBackwardsEncoders(int distance, double power) {
+        // RESET
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // distance
+        motorRight.setTargetPosition(-distance);
+        motorLeft.setTargetPosition(-distance);
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        move(power, power);
+        while (motorLeft.isBusy() && motorRight.isBusy()) {
             //waiting for getting to the given directon
         }
-        stopddriving();
-        MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopDriving();
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
-    public void  suck(double powersuck)
-    {
-        Motorpushsuck.setPower(powersuck);
-    }
-        public void TurnLeft(double powerright,double powerleft)
-    {
-        MotorRight.setPower(powerright);
-        MotorLeft.setPower(powerleft);
-    }
-    public void TurnRight(double powerright,double powerleft)
-    {
-        MotorLeft.setPower(powerleft);
-        MotorRight.setPower(powerright);
-    }
 
+//endregion
 }

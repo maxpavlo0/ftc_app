@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 /**
  * Created by User on 17/01/2017.
  */
+@Disabled
 @Autonomous(name="encoders")
 public class Autonomus_Encoders extends LinearOpMode {
    public DcMotor MotorRight;
@@ -102,8 +102,8 @@ public class Autonomus_Encoders extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        MotorLeft = hardwareMap.dcMotor.get("MotorLeft");
-        MotorRight=hardwareMap.dcMotor.get("MotorRight");
+        MotorLeft = hardwareMap.dcMotor.get("motorLeft");
+        MotorRight=hardwareMap.dcMotor.get("motorRight");
         MotorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         MotorLeft.setDirection(DcMotor.Direction.REVERSE);
