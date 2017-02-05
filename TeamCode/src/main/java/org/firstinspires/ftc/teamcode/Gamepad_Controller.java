@@ -79,7 +79,7 @@ public class Gamepad_Controller extends LinearOpMode {
                 robot.suck(-1);
 
             }
-            if (gamepad1.a && gamepad1.b || gamepad2.x)
+            if (gamepad1.x || gamepad2.x )
             {
                 robot.suck(0);
             }

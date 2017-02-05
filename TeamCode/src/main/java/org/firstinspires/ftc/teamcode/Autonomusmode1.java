@@ -14,7 +14,7 @@ public class Autonomusmode1 extends LinearOpMode {
         RobotClass robot = new RobotClass(hardwareMap);
 
         waitForStart();
-        
+
 
 
         robot.moveForwardEncoders(4260,0.7,telemetry);
