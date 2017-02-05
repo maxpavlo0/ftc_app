@@ -75,13 +75,17 @@ public class Gamepad_Controller extends LinearOpMode {
             robot.move(-gamepad1.right_stick_y, -gamepad1.left_stick_y);
 
 
-            if (gamepad2.a) {
+            if (gamepad2.a || gamepad1.a ) {
                 robot.suck(-1);
 
             }
+            if (gamepad1.a && gamepad1.b)
+            {
+                robot.suck(0);
+            }
 
 
-            if (gamepad2.b) {
+            if (gamepad2.b || gamepad1.b) {
                 robot.suck(1);
             }
             if (gamepad1.right_bumper) {
@@ -90,9 +94,7 @@ public class Gamepad_Controller extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 robot.turnLeft(1, 0.2);
             }
-            if (gamepad1.a && gamepad1.b) {
-                robot.suck(0);
-            }
+
             if(gamepad1.dpad_down || gamepad2.dpad_down)
             {
                 robot.moveForwardEncoders(1000,0.2,telemetry);
@@ -109,10 +111,10 @@ public class Gamepad_Controller extends LinearOpMode {
             {
                 robot.servoControlClose();
             }
-            if(gamepad2.x)
-            {
-                robot.shoot(1);
-            }
+           // if(gamepad2.x)
+           // {
+             //   robot.shoot(1);
+            //}
 
         }
     }

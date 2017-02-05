@@ -21,8 +21,8 @@ public class RobotClass {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
         motorRight = hardwareMap.dcMotor.get("motorRight");
         motorPushSuck = hardwareMap.dcMotor.get("motorPushSuck");
-        motorShoot = hardwareMap.dcMotor.get("motorshoot1");
-        servoLoad = hardwareMap.servo.get("servoLoad");
+       // motorShoot = hardwareMap.dcMotor.get("motorshoot1");
+     //   servoLoad = hardwareMap.servo.get("servoLoad");
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
     }
@@ -75,8 +75,8 @@ public class RobotClass {
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // run to distance
-        motorRight.setTargetPosition(distance);
-        motorLeft.setTargetPosition(-distance);
+        motorRight.setTargetPosition(distance+distance);
+        motorLeft.setTargetPosition(-distance-distance);
 
 
         motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -98,8 +98,8 @@ public class RobotClass {
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 // distance
-        motorRight.setTargetPosition(-distance);
-        motorLeft.setTargetPosition(distance);
+        motorRight.setTargetPosition(-distance-distance);
+        motorLeft.setTargetPosition(distance+distance);
 
         motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -119,8 +119,8 @@ public class RobotClass {
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // RESET
 
-        motorRight.setTargetPosition(distance);
-        motorLeft.setTargetPosition(distance);
+        motorRight.setTargetPosition(distance + motorRight.getCurrentPosition());
+        motorLeft.setTargetPosition(distance + motorLeft.getCurrentPosition());
         // distance
         motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -149,9 +149,10 @@ public class RobotClass {
         motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
         // distance
-        motorRight.setTargetPosition(-distance);
-        motorLeft.setTargetPosition(-distance);
+        motorRight.setTargetPosition(-distance-motorRight.getCurrentPosition());
+        motorLeft.setTargetPosition(-distance-motorLeft.getCurrentPosition());
 
         motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
