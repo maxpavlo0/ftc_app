@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -70,74 +72,80 @@ public class RobotClass {
 //region autonomous
     public void turnLeftEncoders(int distance, double power) {
 
-        //RESET
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // run to distance
-        motorRight.setTargetPosition(distance+distance);
-        motorLeft.setTargetPosition(-distance-distance);
+        int ds = motorLeft.getCurrentPosition();
+        int ds2 = motorRight.getCurrentPosition();
 
+        move(power, -power/2);
+        while(motorLeft.isBusy() && motorRight.isBusy()){
 
-        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        turnLeft(1, 0);
-        while (motorLeft.isBusy() && motorRight.isBusy()) {
-            //waiting for getting to the given directon
+            if(motorLeft.getCurrentPosition() >= distance - ds &&motorRight.getCurrentPosition() <= distance + ds2 ){
+                break;
+            }
         }
         stopDriving();
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
     public void turnRightEncoders(int distance, double power) {
         // RESET
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-// distance
-        motorRight.setTargetPosition(-distance-distance);
-        motorLeft.setTargetPosition(distance+distance);
+         int ds =motorLeft.getCurrentPosition();
+        int ds2 =motorRight.getCurrentPosition();
 
-        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        move(-power/2,power);
+        while(motorLeft.isBusy() && motorRight.isBusy()){
 
-        turnRight(0, 1);
-        while (motorLeft.isBusy() && motorRight.isBusy()) {
-            //waiting for getting to the given direction
+            if(motorLeft.getCurrentPosition() <= distance + ds &&motorRight.getCurrentPosition() >= distance - ds2 ){
+                break;
+            }
         }
         stopDriving();
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void timerun(long seconds)
+    {
+        long starttime=System.currentTimeMillis();
+
+        while(System.currentTimeMillis() <= starttime+ seconds *1000)
+        {
+            move(-0.3,-0.3);
+        }
 
     }
 
-    public void moveForwardEncoders(int distance, double power, Telemetry telemetry) {
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    public void moveForwardEncoders(int distance, double power , Telemetry telemetry) throws InterruptedException {
+
         // RESET
 
-        motorRight.setTargetPosition(distance + motorRight.getCurrentPosition());
-        motorLeft.setTargetPosition(distance + motorLeft.getCurrentPosition());
-        // distance
-        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        telemetry.addData("the current position is", motorLeft.getCurrentPosition());
-        telemetry.addData("the current position is", motorRight.getCurrentPosition());
-        motorRight.getCurrentPosition();
+        int ds = motorLeft.getCurrentPosition();
+        int ds2 = motorRight.getCurrentPosition();
+        telemetry.addData("ds",ds);
+        telemetry.update();
         move(power, power);
-
-        while (motorLeft.isBusy() && motorRight.isBusy()) {
-            telemetry.addData("the loop is still working the motor left is ", motorLeft);
-            telemetry.addData("the loop is still working the motorright is", motorRight);
+        Thread.sleep(100);
+        if (ds < 0 ){
+            ds = ds *-1;
 
         }
-        stopDriving();
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        if(ds2 <0){
+            ds2 = ds2 *-1;
+        }
+        while(motorLeft.isBusy() && motorRight.isBusy()){
+            int a = motorLeft.getCurrentPosition();
+            int b = motorRight.getCurrentPosition();
+            telemetry.addData("motorLeft.getCurrentPosition()",motorLeft.getCurrentPosition());
+            telemetry.update();
+            if( a >= (distance + ds) &&b >= (distance + ds2) ){
+                break;
+            }
+        }        stopDriving();
+        // distance
+
+//        telemetry.addData("the current position is", motorLeft.getCurrentPosition());
+//        telemetry.addData("the current position is", motorRight.getCurrentPosition());
+//        motorRight.getCurrentPosition();
+//        stopDriving();
         telemetry.addData("the current new position is", motorLeft.getCurrentPosition());
         telemetry.addData("the current new position is", motorRight.getCurrentPosition());
 
@@ -146,24 +154,24 @@ public class RobotClass {
 
     public void moveBackwardsEncoders(int distance, double power) {
         // RESET
-        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        int ds = motorLeft.getCurrentPosition();
+        int ds2 =motorRight.getCurrentPosition();
 
+        move(-power, -power);
+        while(motorLeft.isBusy() && motorRight.isBusy()){
 
-        // distance
-        motorRight.setTargetPosition(-distance-motorRight.getCurrentPosition());
-        motorLeft.setTargetPosition(-distance-motorLeft.getCurrentPosition());
-
-        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        move(power, power);
-        while (motorLeft.isBusy() && motorRight.isBusy()) {
-            //waiting for getting to the given directon
+            if(motorLeft.getCurrentPosition() <= distance - ds &&motorRight.getCurrentPosition() <= distance - ds2 ){
+                break;
+            }
         }
         stopDriving();
-        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // distance
+
+//        telemetry.addData("the current position is", motorLeft.getCurrentPosition());
+//        telemetry.addData("the current position is", motorRight.getCurrentPosition());
+//        motorRight.getCurrentPosition();
+//        stopDriving();
+
 
     }
 
