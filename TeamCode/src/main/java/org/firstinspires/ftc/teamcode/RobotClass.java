@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -13,11 +15,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 
 public class RobotClass {
+
+
     public DcMotor motorShoot;
     public DcMotor motorLeft;
     public DcMotor motorRight;
     public DcMotor motorPushSuck;
     public Servo servoLoad;
+
+    ColorSensor color_sensor;
 
     RobotClass(HardwareMap hardwareMap) {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
@@ -26,8 +32,34 @@ public class RobotClass {
        // motorShoot = hardwareMap.dcMotor.get("motorshoot1");
      //   servoLoad = hardwareMap.servo.get("servoLoad");
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
-
+        color_sensor = hardwareMap.colorSensor.get("color");
     }
+
+
+
+    public boolean red()
+    {
+        if (color_sensor.red()>color_sensor.green() && color_sensor.green()>color_sensor.blue())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public boolean blue()
+    {
+        if (color_sensor.blue()>color_sensor.green() && color_sensor.blue()>color_sensor.red())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     //region drive
     public void shoot(int power) {
         motorShoot.setPower(1);
@@ -158,6 +190,14 @@ public class RobotClass {
         int ds2 =motorRight.getCurrentPosition();
 
         move(-power, -power);
+
+        if (ds < 0 ){
+            ds = ds *-1;
+
+        }
+        if(ds2 <0){
+            ds2 = ds2 *-1;
+        }
         while(motorLeft.isBusy() && motorRight.isBusy()){
 
             if(motorLeft.getCurrentPosition() <= distance - ds &&motorRight.getCurrentPosition() <= distance - ds2 ){
