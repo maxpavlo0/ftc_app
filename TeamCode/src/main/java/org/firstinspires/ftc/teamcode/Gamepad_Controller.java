@@ -95,22 +95,22 @@ public class Gamepad_Controller extends LinearOpMode {
                 robot.turnLeft(1, 0.2);
             }
 
-            if(gamepad1.dpad_down || gamepad2.dpad_down)
-            {
-                robot.moveForwardEncoders(1000,0.2,telemetry);
-            }
-            if (gamepad1.dpad_up || gamepad2.dpad_up)
-            {
-              robot.moveBackwardsEncoders(1000,0.2);
-            }
-            if (gamepad2.right_bumper)
-            {
-                robot.servoControlOpen();
-            }
-            if (gamepad2.left_bumper)
-            {
+           // if(gamepad1.dpad_down || gamepad2.dpad_down)
+            //{
+              //  robot.moveForwardEncoders(1000,0.2);
+            //}
+            //if (gamepad1.dpad_up || gamepad2.dpad_up)
+            //{
+              //robot.moveBackwardsEncoders(1000,0.2);
+            //}
+            //if (gamepad2.right_bumper)
+            //{
+              //  robot.servoControlOpen();
+            //}
+            //if (gamepad2.left_bumper)
+            //{
                 robot.servoControlClose();
-            }
+            //}
            // if(gamepad2.x)
            // {
              //   robot.shoot(1);
